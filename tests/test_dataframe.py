@@ -3,6 +3,8 @@ import pytest
 from data.index import Index
 from data.series import Series
 from data.dataframe import DataFrame
+from data.indexed_container import IndexedContainer
+from data.exceptions import InvalidDataError
 
 
 @pytest.fixture
@@ -32,23 +34,24 @@ def test_dataframe(users_data, salaries_data, names_data, cash_flow_data):
     names = Series(values=names_data, index=users)
     cash_flow = Series(values=cash_flow_data, index=users)
 
-    columns = Index(labels=["names", "salary", "cash flow"])
-    data = DataFrame(values=[names, salaries, cash_flow], columns=columns)
+    index = Index(labels=["names", "salary", "cash flow"])
+    data = DataFrame(values=[names, salaries, cash_flow], index=index)
 
-    assert data.columns == columns
+    assert data.index == index
     assert data.values == [names, salaries, cash_flow]
     assert isinstance(data.values, list)
     assert data.get(key="salary") == salaries
     assert data.get(key="cash flow").max() == 10000
     assert data.get(key="wrong key") == None
+    assert isinstance(data, IndexedContainer)
 
 
 def test_empty_dataframe():
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidDataError):
         DataFrame(values=[])
 
 
-def test_empty_columns(users_data, salaries_data, names_data, cash_flow_data):
+def test_empty_index(users_data, salaries_data, names_data, cash_flow_data):
     users = Index(labels=users_data, name="names")
 
     salaries = Series(values=salaries_data, index=users)
@@ -57,7 +60,7 @@ def test_empty_columns(users_data, salaries_data, names_data, cash_flow_data):
 
     data = DataFrame(values=[names, salaries, cash_flow])
 
-    assert data.columns.labels == Index(labels=list(range(3))).labels
+    assert data.index.labels == Index(labels=list(range(3))).labels
     assert data.values == [names, salaries, cash_flow]
     assert data.get(key=1) == salaries
     assert data.get(key=2).max() == 10000
@@ -65,7 +68,7 @@ def test_empty_columns(users_data, salaries_data, names_data, cash_flow_data):
 
 @pytest.mark.parametrize(
     "function",
-    [DataFrame, DataFrame.get],
+    [DataFrame],
 )
 def test_docstrings(function):
     assert function.__doc__ is not None

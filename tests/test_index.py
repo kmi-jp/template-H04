@@ -1,6 +1,7 @@
 import pytest
 
 from data.index import Index
+from data.exceptions import InvalidDataError, DuplicateKeyError
 
 
 @pytest.fixture
@@ -19,7 +20,7 @@ def test_index(keys):
 
 
 def test_empty_labels():
-    with pytest.raises(ValueError):
+    with pytest.raises(InvalidDataError):
         Index(labels=[])
 
 
@@ -35,9 +36,12 @@ def test_invalid_key():
 
 
 def test_label_duplicity():
-    with pytest.raises(ValueError):
-        Index(labels=["key 1", "key 1", "key 3", "key 4", "key 5"])
+    with pytest.raises(DuplicateKeyError) as err:
+        Index(labels=["key 1", "key 3", "key 4", "key 1", "key 5"]) 
 
+    assert len(err.value.duplicates) == 1
+    assert "key 1" in err.value.duplicates
+        
 
 @pytest.mark.parametrize(
     "function",
