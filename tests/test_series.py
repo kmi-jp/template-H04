@@ -3,9 +3,9 @@ import pytest
 
 from data.index import Index
 from data.series import Series
+from data.dataframe import DataFrame
 from data.exceptions import InvalidDataError, IndexMismatchError
 from data.indexed_container import IndexedContainer
-
 
 
 @pytest.fixture
@@ -27,19 +27,6 @@ def test_series(values_data, idx):
     assert isinstance(salaries.values, list)
     assert salaries.index == idx
     assert isinstance(salaries, IndexedContainer)
-
-
-# def test_empty_index(values_data):
-#     salaries = Series(values=values_data)
-
-#     assert salaries.index.labels == Index(labels=list(range(len(values_data)))).labels
-
-
-# def test_series_get(values_data, idx):
-#     salaries = Series(values=values_data, index=idx)
-
-#     assert salaries.get(key="user 2") == values_data[1]
-#     assert salaries.get(key="wrong key") == None
 
 
 def test_series_sum(values_data, idx):
@@ -92,23 +79,12 @@ def test_series_abs(idx):
     assert result.values == list(map(abs, values))
 
 
-# def test_empty_series():
-#     with pytest.raises(InvalidDataException):
-#         Series(values=[])
+def test_series_parent_class(values_data, idx):
+    salaries = Series(values=values_data, index=idx)
 
-
-# @pytest.mark.parametrize(
-#     "values,labels",
-#     [
-#         ([20000, 300000, 20000], ["user 1"]),
-#         ([20000], ["user 1", "user 2"]),
-#     ],
-# )
-# def test_index_values_length_mismatch(values, labels):
-#     idx = Index(labels, name="names")
-
-#     with pytest.raises(IndexMismatchException):
-#         Series(values=values, index=idx)
+    assert isinstance(salaries, IndexedContainer) == True
+    assert isinstance(salaries, DataFrame) == False
+    assert isinstance(salaries, Index) == False
 
 
 @pytest.mark.parametrize(

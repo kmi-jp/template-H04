@@ -3,6 +3,7 @@ import pytest
 
 from data.index import Index
 from data.series import Series
+from data.dataframe import DataFrame
 from data.indexed_container import IndexedContainer
 from data.exceptions import IndexMismatchError, InvalidDataError
 
@@ -46,6 +47,14 @@ def test_indexed_container_get(values_data, idx):
 
     assert salaries.get(key="user 2") == values_data[1]
     assert salaries.get(key="wrong key") == None
+
+
+def test_indexed_container_parent_class(values_data, idx):
+    salaries = IndexedContainer(values=values_data, index=idx)
+
+    assert isinstance(salaries, Series) == False
+    assert isinstance(salaries, DataFrame) == False
+    assert isinstance(salaries, Index) == False
 
 
 @pytest.mark.parametrize(

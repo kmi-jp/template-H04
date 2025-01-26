@@ -46,6 +46,34 @@ def test_dataframe(users_data, salaries_data, names_data, cash_flow_data):
     assert isinstance(data, IndexedContainer)
 
 
+def test_dataframe_parent_class(users_data, salaries_data, names_data, cash_flow_data):
+    users = Index(labels=users_data, name="names")
+
+    salaries = Series(values=salaries_data, index=users)
+    names = Series(values=names_data, index=users)
+    cash_flow = Series(values=cash_flow_data, index=users)
+
+    index = Index(labels=["names", "salary", "cash flow"])
+    data = DataFrame(values=[names, salaries, cash_flow], index=index)
+
+    assert isinstance(data, IndexedContainer) == True
+    assert isinstance(data, Series) == False
+    assert isinstance(data, Index) == False
+
+
+def test_dataframe_valuues(users_data, salaries_data, names_data, cash_flow_data):
+    users = Index(labels=users_data, name="names")
+
+    salaries = Series(values=salaries_data, index=users)
+    names = Series(values=names_data, index=users)
+    cash_flow = Series(values=cash_flow_data, index=users)
+
+    index = Index(labels=["names", "salary", "cash flow"])
+
+    with pytest.raises(InvalidDataError):
+        DataFrame(values=[salaries, names, 42, cash_flow], index=index)
+
+
 def test_empty_dataframe():
     with pytest.raises(InvalidDataError):
         DataFrame(values=[])

@@ -4,12 +4,12 @@ Vytvořte balíček `data`, který obsahuje moduly `exceptions.py`, `indexed_con
 
 ---
 
-## Soubor `exceptions.py`
+## Modul `exceptions.py`
 
 Modul `exceptions.py` obsahuje definice tří výjimek `InvalidDataError`, `IndexMismatchError` a `DuplicateKeyError`:
 
 * `InvalidDataError` a `IndexMismatchError` dědí od `Exception` a nepřidávají žádnou další funkcionalitu.
-* `DuplicateKeyError` dědí od `Exception` a navíc v atributu `DuplicateKeyError.dupliactes` uchovává seznam duplicitních klíčů.
+* `DuplicateKeyError` dědí od `Exception` a navíc v atributu `DuplicateKeyError.duplicates` uchovává seznam duplicitních klíčů, který se vypočítá při vytvoření výjimky.
 
 ```python
 from data.exceptions import DuplicateKeyError
