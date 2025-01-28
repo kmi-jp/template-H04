@@ -39,10 +39,10 @@ values = [0, 1, 2, 3, 4]
 assert values[idx.get_loc("key 2")] == 1
 ```
 
-Třída obsahuje následující vlastnosti:
+Třída obsahuje následující atributy:
 
 * `Index.labels` - seznam klíču (labelů) - nesmí obsahovat duplicity (vyvolá výjimku `DuplicateKeyError`) a musí mít alespoň jeden prvek (jinak vyvolá výjimku `InvalidDataError`).
-* `Index.name` - volitelná vlastnost obsahující název indexu, výchozí hodnota na `""`.
+* `Index.name` - volitelný atribut obsahující název indexu, výchozí hodnota na `""`.
 
 Třída obsahuje následující metody:
 
@@ -75,7 +75,7 @@ assert idx.get_loc("user 2") == 1
 
 Modul `indexed_container.py` obsahuje třídu `IndexedContainer` reprezentující datovou strukturu, jejíž hodnoty jsou indexované objektem třídy `Index`.
 
-Třída obsahuje následující vlastnosti:
+Třída obsahuje následující atributy:
 
 * `IndexedContainer.values` - seznam hodnot uložený v kontejneru, musí obsahovat alespoň jeden prvek jinak vyvolá `InvalidDataError`.
 * `IndexedContainer.index` - index sloužící k indexaci `IndexedContainer.values`, musí být stejné délky jako `IndexedContainer.values` jinak vyvolá `IndexMismatchError`. Pokud byla počáteční hodnota `None` vytvoříme index nový, `Index.labels` nastavíme na hodnoty `0` až `n - 1` kde `n` je délka `IndexedContainer.values`.
@@ -86,7 +86,6 @@ Třída obsahuje následující metody:
 
 ```python
 from data.indexed_container import IndexedContainer
-
 
 # index
 users = Index(["user 1", "user 2", "user 3", "user 4"], name="names")
@@ -126,7 +125,7 @@ assert salaries.values == [20000, 300000, 20000, 50000]
 assert salaries.index.labels == ['user 1', 'user 2', 'user 3', 'user 4']
 ```
 
-Třída dále obsahuje pouze zděděné vlastnosti `values` (hodnoty posloupnosti) a `index`.
+Třída dále obsahuje pouze zděděné atributy `values` (hodnoty posloupnosti) a `index`.
 
 Třída obsahuje následující metody:
 
@@ -318,7 +317,7 @@ Modul `dataframe.py` obsahuje třídu `DataFrame`, která slouží k reprezentac
 
 ![DataFrame](dataframe.png)
 
-Třída obsahuje pouze zděděné vlastnosti `values`(sloupce tabulky - seznam instancí třídy Series) a `index`:
+Třída obsahuje pouze zděděné atributy `values`(sloupce tabulky - seznam instancí třídy Series) a `index`:
 
 * `DataFrame.values` - pokud seznam obsahuje jiný objekt než `Series`, pak skončí výjimkou  `InvalidDataError`.
 
